@@ -9,53 +9,11 @@ namespace LineDevelopers.Webhook.Sample.Controllers
     [Route("[controller]")]
     public class LineController : LineControllerBase
     {
-        readonly LineMessagingClient _client;
-
-        public LineController()
+        public LineController() : base(channelId: "", channelSecret: "")
         {
-            _client = new LineMessagingClient("your channel access token");
         }
 
-        [HttpPost("callback")]
-        public override async Task<IActionResult> CallBackAsync([FromBody] WebhookBody request)
-            => await base.CallBackAsync(request).ConfigureAwait(false);
-
-        protected override Task OnAccountLinkEventAsync(AccountLinkEventObject accountLinkEventObject)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override Task OnBeaconEventAsync(BeaconEventObject beaconEventObject)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override Task OnFollowEventAsync(FollowEventObject followEventObject)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override Task OnJoinEventAsync(JoinEventObject joinEventObject)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override Task OnLeaveEventAsync(LeaveEventObject leaveEventObject)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override Task OnMemberJoinEventAsync(MemberJoinEventObject memberJoinEventObject)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override Task OnMemberLeaveEventAsync(MemberLeaveEventObject memberLeaveEventObject)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override async Task OnMessageEventAsync(MessageEventObject messageEventObject)
+        protected override async Task OnMessageEventAsync(IMessageClient client, MessageEventObject messageEventObject)
         {
             var messages = new List<IMessage>()
             {
@@ -82,7 +40,7 @@ namespace LineDevelopers.Webhook.Sample.Controllers
 
             try
             {
-                await _client.Message.SendReplyMessageAsync(messageEventObject.ReplyToken, messages);
+                await client.SendReplyMessageAsync(messageEventObject.ReplyToken, messages);
             }
             catch (LineException ex)
             {
@@ -96,27 +54,66 @@ namespace LineDevelopers.Webhook.Sample.Controllers
             }
         }
 
-        protected override Task OnPostBackEventAsync(PostBackEventObject postBackEventObject)
+        protected override Task OnUnSendEventAsync(IMessageClient client, UnSendEventObject unSendEventObject)
         {
             throw new NotImplementedException();
         }
 
-        protected override Task OnThingsEventAsync(ThingsEventObject thingsEventObject)
+        protected override Task OnFollowEventAsync(IMessageClient client, FollowEventObject followEventObject)
         {
             throw new NotImplementedException();
         }
 
-        protected override Task OnUnFollowEventAsync(UnFollowEventObject unFollowEventObject)
+        protected override Task OnUnFollowEventAsync(IMessageClient client, UnFollowEventObject unFollowEventObject)
         {
             throw new NotImplementedException();
         }
 
-        protected override Task OnUnSendEventAsync(UnSendEventObject unSendEventObject)
+        protected override Task OnJoinEventAsync(IMessageClient client, JoinEventObject joinEventObject)
         {
             throw new NotImplementedException();
         }
 
-        protected override Task OnVideoViewingCompleteEventAsync(VideoViewingCompleteEventObject videoViewingCompleteEventObject)
+        protected override Task OnLeaveEventAsync(IMessageClient client, LeaveEventObject leaveEventObject)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override Task OnMemberJoinEventAsync(IMessageClient client,
+            MemberJoinEventObject memberJoinEventObject)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override Task OnMemberLeaveEventAsync(IMessageClient client,
+            MemberLeaveEventObject memberLeaveEventObject)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override Task OnPostBackEventAsync(IMessageClient client, PostBackEventObject postBackEventObject)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override Task OnVideoViewingCompleteEventAsync(IMessageClient client,
+            VideoViewingCompleteEventObject videoViewingCompleteEventObject)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override Task OnBeaconEventAsync(IMessageClient client, BeaconEventObject beaconEventObject)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override Task OnAccountLinkEventAsync(IMessageClient client,
+            AccountLinkEventObject accountLinkEventObject)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override Task OnThingsEventAsync(IMessageClient client, ThingsEventObject thingsEventObject)
         {
             throw new NotImplementedException();
         }
